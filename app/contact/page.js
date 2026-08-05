@@ -43,19 +43,18 @@ export default function Contact() {
               <input
                 type="text"
                 placeholder="Your Name"
-                className="w-full border border-slate-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
 
               <input
                 type="email"
                 placeholder="Your Email"
-                className="w-full border border-slate-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              />
+className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"              />
 
               <textarea
                 rows="5"
                 placeholder="Your Message"
-                className="w-full border border-slate-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               ></textarea>
 
               <button
