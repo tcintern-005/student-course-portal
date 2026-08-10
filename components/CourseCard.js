@@ -1,6 +1,7 @@
+"use client";
 import Link from "next/link";
 
-export default function CourseCard({ course }) {
+export default function CourseCard({ course, onEdit, onDelete }) {
   return (
     <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
 
@@ -28,11 +29,25 @@ export default function CourseCard({ course }) {
         </div>
 
         <Link
-          href={`/courses/${course.slug}`}
+          href={`/courses/${course.id}`}
           className="mt-8 inline-block w-full text-center bg-slate-900 hover:bg-emerald-600 text-white py-3 rounded-xl font-semibold transition"
         >
           View Course
         </Link>
+
+        <button
+          onClick={() => onEdit(course)}
+          className="mt-3 w-full bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-xl font-semibold transition"
+        >
+          Edit Course
+        </button>
+
+        <button
+          onClick={() => onDelete(course.id)}
+          className="mt-3 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition"
+        >
+          Delete Course
+        </button>
 
       </div>
 
