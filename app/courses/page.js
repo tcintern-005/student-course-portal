@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import CourseCard from "@/components/CourseCard";
 import SectionTitle from "@/components/SectionTitle";
 
@@ -12,6 +13,8 @@ import {
 } from "@/lib/api";
 
 export default function CoursesPage() {
+  const router = useRouter();
+
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,13 +43,33 @@ export default function CoursesPage() {
   const [deletingCourse, setDeletingCourse] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
-  // Fetch courses
+  // Check authentication + Fetch courses
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.replace("/login");
+      return;
+    }
+
     const fetchCourses = async () => {
       try {
         const data = await getCourses();
         setCourses(data);
       } catch (error) {
+        const message = error.message.toLowerCase();
+
+        if (
+          message.includes("authentication") ||
+          message.includes("invalid") ||
+          message.includes("expired")
+        ) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          router.replace("/login");
+          return;
+        }
+
         setError("Unable to load courses. Please try again.");
       } finally {
         setLoading(false);
@@ -54,7 +77,7 @@ export default function CoursesPage() {
     };
 
     fetchCourses();
-  }, []);
+  }, [router]);
 
   // Add Course
   const handleAddCourse = async () => {
@@ -87,7 +110,6 @@ export default function CoursesPage() {
       setLevel("");
 
       setSuccessMessage("Course added successfully!");
-
     } catch (error) {
       setAddError(error.message);
     } finally {
@@ -135,7 +157,6 @@ export default function CoursesPage() {
       );
 
       setEditingCourse(null);
-
     } catch (error) {
       setEditError(error.message);
     } finally {
@@ -163,7 +184,6 @@ export default function CoursesPage() {
       setCourses((previousCourses) =>
         previousCourses.filter((course) => course.id !== courseId)
       );
-
     } catch (error) {
       setDeleteError(error.message);
     } finally {
