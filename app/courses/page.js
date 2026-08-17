@@ -55,7 +55,7 @@ export default function CoursesPage() {
     const fetchCourses = async () => {
       try {
         const data = await getCourses();
-        setCourses(data);
+        setCourses(data.courses || []);
       } catch (error) {
         const message = error.message.toLowerCase();
 

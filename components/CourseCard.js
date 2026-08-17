@@ -1,7 +1,25 @@
 "use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function CourseCard({ course, onEdit, onDelete }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const isAdmin = user?.role === "admin";
+  const isOwner =
+    user && course.owner_id === user.id;
+
+  const canModify = isAdmin || isOwner;
+
   return (
     <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
 
@@ -35,22 +53,25 @@ export default function CourseCard({ course, onEdit, onDelete }) {
           View Course
         </Link>
 
-        <button
-          onClick={() => onEdit(course)}
-          className="mt-3 w-full bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-xl font-semibold transition"
-        >
-          Edit Course
-        </button>
+        {canModify && (
+          <>
+            <button
+              onClick={() => onEdit(course)}
+              className="mt-3 w-full bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-xl font-semibold transition"
+            >
+              Edit Course
+            </button>
 
-        <button
-          onClick={() => onDelete(course.id)}
-          className="mt-3 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition"
-        >
-          Delete Course
-        </button>
+            <button
+              onClick={() => onDelete(course.id)}
+              className="mt-3 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition"
+            >
+              Delete Course
+            </button>
+          </>
+        )}
 
       </div>
-
     </div>
   );
 }
